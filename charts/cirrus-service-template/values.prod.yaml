@@ -1,0 +1,8 @@
+# Specific values used in production environment.
+
+# GCP production configuration
+gcp:
+  projectId: "careofcrm"
+
+# Global log level used in all apps
+logLevel: "info"

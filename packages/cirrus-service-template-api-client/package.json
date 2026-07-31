@@ -1,0 +1,27 @@
+{
+  "name": "@cirruscrmio/service-template-api-client",
+  "version": "1.0.0",
+  "repository": "https://github.com/cirruscrmio/cirrus-service-template",
+  "type": "module",
+  "exports": {
+    ".": {
+      "import": "./out/index.js",
+      "types": "./out/index.d.ts"
+    },
+    "./client": {
+      "import": "./out/client.js",
+      "types": "./out/client.d.ts"
+    }
+  },
+  "scripts": {
+    "build": "bun build ./src/*.ts --target node --outdir ./out && tsc --declaration --emitDeclarationOnly",
+    "lint": "eslint src",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@cirruscrmio/service-template-api-proto": "workspace:*",
+    "@connectrpc/connect": "2.1.1",
+    "@connectrpc/connect-node": "2.1.1"
+  },
+  "devDependencies": {}
+}

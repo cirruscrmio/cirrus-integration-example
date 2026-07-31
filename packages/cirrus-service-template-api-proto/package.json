@@ -1,0 +1,22 @@
+{
+  "name": "@cirruscrmio/service-template-api-proto",
+  "version": "1.0.0",
+  "repository": "https://github.com/cirruscrmio/cirrus-service-template",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts",
+    "./*": "./gen/cirrus/service-template-api/v1/*"
+  },
+  "scripts": {
+    "build": "rm -r ./gen && buf generate",
+    "lint": "eslint src && buf lint",
+    "typecheck": "tsc"
+  },
+  "dependencies": {
+    "@bufbuild/protobuf": "2.10.2"
+  },
+  "devDependencies": {
+    "@bufbuild/buf": "1.64.0",
+    "@bufbuild/protoc-gen-es": "2.10.2"
+  }
+}

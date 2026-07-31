@@ -1,0 +1,14 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: {{ include "cirrus-service-template.fullname" . }}
+  labels:
+    app: service-template
+    role: service-monitor
+    {{- include "cirrus-service-template.labels" . | nindent 4 }}
+spec:
+  selector:
+    matchLabels:
+      {{- include "cirrus-service-template.selectorLabels" . | nindent 6 }}
+  endpoints:
+    - port: http

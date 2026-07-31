@@ -1,0 +1,106 @@
+name: Deploy to Production
+
+on:
+  push:
+    branches:
+      - "main"
+
+concurrency:
+  group: deploy-to-prod
+
+jobs:
+  build:
+    name: Build and push Docker image
+    runs-on: ubuntu-latest
+    outputs:
+      short_sha: ${{ steps.set_short_sha.outputs.short_sha }}
+    strategy:
+      matrix:
+        docker:
+          - tag: "gcr.io/careofcrm/cirrus-service-template-api-server"
+            file: "apps/api-server/Dockerfile"
+    steps:
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v4
+
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: Set short commit SHA
+        id: set_short_sha
+        run: |
+          echo "SHORT_SHA=$(echo $GITHUB_SHA | cut -c1-7)" >> $GITHUB_ENV
+          echo "short_sha=$(echo $GITHUB_SHA | cut -c1-7)" >> $GITHUB_OUTPUT
+
+      - name: Create .npmrc
+        run: |
+          echo "@cirruscrmio:registry=https://npm.pkg.github.com" > .npmrc
+          echo "//npm.pkg.github.com/:_authToken=${{ secrets.GITHUB_TOKEN }}" >> .npmrc
+
+      - name: Set up GCP credentials
+        id: gcp_auth
+        uses: google-github-actions/auth@v3
+        with:
+          token_format: "access_token"
+          credentials_json: ${{ secrets.GCLOUD_AUTH }}
+          create_credentials_file: false
+
+      - name: Login to gcr.io
+        uses: docker/login-action@v4
+        with:
+          registry: gcr.io
+          username: oauth2accesstoken
+          password: ${{ steps.gcp_auth.outputs.access_token }}
+
+      - name: Build and push
+        uses: docker/build-push-action@v7
+        with:
+          secret-files: |
+            "npmrc=./.npmrc"
+          push: true
+          file: ${{ matrix.docker.file }}
+          tags: |
+            ${{ matrix.docker.tag }}:latest
+            ${{ matrix.docker.tag }}:${{ env.SHORT_SHA }}
+          cache-from: type=gha
+          cache-to: type=gha
+
+  deploy:
+    name: Deploy to GKE
+    runs-on: ubuntu-latest
+    environment: production
+    needs: [build]
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: Set up GCP credentials
+        uses: google-github-actions/auth@v3
+        with:
+          credentials_json: ${{ secrets.GCLOUD_AUTH }}
+
+      - name: Set up GKE context
+        uses: google-github-actions/get-gke-credentials@v3
+        with:
+          cluster_name: ne-cirrus-cluster
+          location: europe-north1-a
+
+      - uses: azure/setup-helm@v5
+        name: Set up Helm
+        with:
+          version: "3.14.1"
+
+      - name: Deploy with Helm
+        env:
+          IMAGE_VERSION: ${{ needs.build.outputs.short_sha }}
+        run: |
+          helm upgrade cirrus-service-template ./charts/cirrus-service-template \
+            --install \
+            --atomic \
+            --timeout 300s \
+            --dry-run \
+            --namespace master \
+            -f ./charts/cirrus-service-template/values.yaml \
+            -f ./charts/cirrus-service-template/values.prod.yaml \
+            --set apps.apiServer.image.tag=${IMAGE_VERSION} \
+            --set secret.FOO_SECRET=${{ secrets.FOO_SECRET }}

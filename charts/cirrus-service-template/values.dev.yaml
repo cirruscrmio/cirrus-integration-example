@@ -1,0 +1,14 @@
+# Specific values used in development environment.
+
+# GCP development configuration
+gcp:
+  projectId: "careofcrm-dev-20f4b"
+
+# Custom configuration of apps
+apps:
+  apiServer:
+    image:
+      repository: gcr.io/careofcrm-dev-20f4b/cirrus-service-template-api-server
+
+# Global log level used in all apps
+logLevel: "debug"

@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package cirrus.service_template_api.v1;
+
+service HelloService {
+  rpc SayHello(SayHelloRequest) returns (SayHelloResponse);
+}
+
+message SayHelloRequest {
+  string message = 1;
+}
+
+message SayHelloResponse {
+  string message = 1;
+}
