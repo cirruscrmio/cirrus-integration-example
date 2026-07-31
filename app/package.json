@@ -1,0 +1,16 @@
+{
+  "name": "@cirruscrmio/integration-example-api-server",
+  "module": "src/index.ts",
+  "type": "module",
+  "scripts": {
+    "dev": "bun run --env-file=.env --watch src/index.ts",
+    "lint": "eslint src",
+    "test": "bun test",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "winston": "3.19.0",
+    "zod": "4.3.5"
+  },
+  "devDependencies": {}
+}
