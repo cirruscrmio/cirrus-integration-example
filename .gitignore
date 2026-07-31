@@ -1,0 +1,40 @@
+# Dependencies
+node_modules
+
+# Output
+dist
+*.tgz
+
+# Code coverage
+coverage
+*.lcov
+
+# Logs
+logs
+_.log
+report.[0-9]_.[0-9]_.[0-9]_.[0-9]_.json
+
+# Dotenv environment variable files
+.env
+.env.local
+
+.env.development
+.env.development.local
+
+.env.production
+.env.production.local
+
+# NB: Some services might have a `.env.test` that contains envs
+# to be used in tests. If so that file is commited.
+.env.test.local
+
+# Caches
+.eslintcache
+.cache
+*.tsbuildinfo
+
+# IntelliJ based IDEs
+.idea
+
+# Finder (MacOS) folder config
+.DS_Store

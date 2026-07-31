@@ -1,0 +1,4 @@
+{
+  "*.{js,json,md,ts}": "eslint --fix",
+  "*": "prettier --ignore-unknown --write --prose-wrap always"
+}
