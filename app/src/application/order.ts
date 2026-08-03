@@ -5,7 +5,7 @@ export const syncOrders = async (orders: ExternalOrder[]) => {
   const externalAccountIds = orders.map((order) => order.account.externalId);
 
   const externalAccounts = await listAccounts({
-    externalIds: externalAccountIds,
+    externalKey: externalAccountIds[0] || "",
   });
 
   console.log(orders, externalAccounts);

@@ -1,0 +1,10 @@
+  query listAccounts($filter: AccountsFilterInput) {
+    accounts(filter: $filter) {
+      edges {
+        node {
+          name
+          externalKey
+        }
+      }
+    }
+  }

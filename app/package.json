@@ -3,6 +3,7 @@
   "module": "src/index.ts",
   "type": "module",
   "scripts": {
+    "codegen": "graphql-codegen --config codegen.ts",
     "dev": "bun run --env-file=.env --watch src/index.ts",
     "lint": "eslint src",
     "test": "bun test",
@@ -15,5 +16,9 @@
     "winston": "3.19.0",
     "zod": "4.3.5"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "@graphql-codegen/cli": "7.2.0",
+    "@graphql-codegen/typescript-graphql-request": "7.1.0",
+    "@graphql-codegen/typescript-operations": "6.1.2"
+  }
 }
