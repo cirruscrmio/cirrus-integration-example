@@ -12,7 +12,9 @@ export const configSchema = z.object({
   // Endpoint to Cirrus GraphQL API
   CIRRUS_GRAPHQL_URL: z.url().default("https://api.cirruscrm.io/graphql"),
 
-  LOG_LEVEL: z.enum(["debug", "info", "warn", "error"]).default("info"),
+  LOG_LEVEL: z
+    .enum(["verbose", "debug", "info", "warn", "error"])
+    .default("info"),
 
   NODE_ENV: z
     .enum(["development", "test", "production"])
