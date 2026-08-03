@@ -1,4 +1,4 @@
-import { listAccounts } from "~/graphql/account";
+import { listAccounts } from "~/api";
 import type { ExternalOrder } from "./types";
 
 export const syncOrders = async (orders: ExternalOrder[]) => {

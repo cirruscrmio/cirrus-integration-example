@@ -7,17 +7,7 @@ const config: CodegenConfig = {
   generates: {
     "src/gql/graphql.ts": {
       // Generates a SDK that can be used in GraphQL client
-      // plugins: ["typescript-graphql-request"],
-      plugins: [
-        // "typescript",
-        "typescript-operations",
-        "typescript-graphql-request",
-      ],
-
-    config: {
-        enumsAsTypes: true,
-        futureProofEnums: true,
-      },
+      plugins: ["typescript-operations", "typescript-graphql-request"],
     },
   },
 };

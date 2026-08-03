@@ -1,10 +1,32 @@
-  query listAccounts($filter: AccountsFilterInput) {
-    accounts(filter: $filter) {
-      edges {
-        node {
-          name
-          externalKey
-        }
+fragment Article on Article {
+  id
+  number
+
+  description
+  buyprice
+  price
+  name
+  active
+  externalKey
+  vat
+}
+
+fragment Account on Account {
+  id
+  number
+  userId
+}
+
+query listAccounts($filter: AccountsFilterInput) {
+  accounts(filter: $filter) {
+    pageInfo {
+      endCursor
+      hasNextPage
+    }
+    edges {
+      node {
+        ...Account
       }
     }
   }
+}
