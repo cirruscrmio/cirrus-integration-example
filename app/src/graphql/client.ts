@@ -2,6 +2,7 @@ import { GraphQLClient } from "graphql-request";
 import config from "~/config";
 import { getToken } from "./auth";
 
+/** Creates a GraphQL API client with authentication */
 export const getGraphQLClient = async (): Promise<GraphQLClient> => {
   const token = await getToken();
 

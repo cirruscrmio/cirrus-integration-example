@@ -13,7 +13,7 @@ const document = gql`
   }
 `;
 
-export const getAccount = async () => {
+export const listAccounts = async () => {
   const client = await getGraphQLClient();
   const result = await client.request(document);
   return result;

@@ -6,10 +6,10 @@ import { createWinstonLogger } from "~/logger";
 // before it will be refetched
 const MIN_SECONDS_BEFORE_REFRESH = 10;
 
-type Result = Awaited<ReturnType<typeof client.clientCredentialsGrant>>;
+type AuthResult = Awaited<ReturnType<typeof client.clientCredentialsGrant>>;
 
-let current: Result | undefined;
-let ongoingRequest: Promise<Result> | undefined;
+let cachedResponse: AuthResult | undefined;
+let ongoingRequest: Promise<AuthResult> | undefined;
 
 const logger = createWinstonLogger({ level: config.LOG_LEVEL });
 
@@ -27,13 +27,13 @@ const clientConfig = new client.Configuration(
 export const getToken = async (): Promise<string> => {
   // If there is an existing token then reause that
   // assuming there is sufficent expiration time left on it
-  if (current) {
-    const expiresIn = current.expiresIn();
+  if (cachedResponse) {
+    const expiresIn = cachedResponse.expiresIn();
 
     if (expiresIn && expiresIn > MIN_SECONDS_BEFORE_REFRESH) {
       logger.verbose("Resuing existing auth token");
 
-      return current.access_token;
+      return cachedResponse.access_token;
     }
   }
 
@@ -49,9 +49,18 @@ export const getToken = async (): Promise<string> => {
 
   logger.verbose("Starting to fetch auth token");
   ongoingRequest = client.clientCredentialsGrant(clientConfig);
-  current = await ongoingRequest;
 
-  logger.verbose("Successfully fetched auth token");
+  try {
+    cachedResponse = await ongoingRequest;
+    logger.verbose("Successfully fetched auth token");
+  } catch (error) {
+    logger.error("Failed to fetch auth token", error);
+    // Re-throw the error to the caller
+    throw error;
+  } finally {
+    // Clear the ongoing request semaphore after the request is complete
+    ongoingRequest = undefined;
+  }
 
-  return current.access_token;
+  return cachedResponse.access_token;
 };

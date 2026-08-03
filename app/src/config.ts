@@ -2,6 +2,7 @@ import { z } from "zod";
 
 // Define required environment variables here
 export const configSchema = z.object({
+  // Client credentials which can be requested from Cirrus
   CIRRUS_AUTH_CLIENT_ID: z.string().min(1),
   CIRRUS_AUTH_CLIENT_SECRET: z.string().min(1),
 
