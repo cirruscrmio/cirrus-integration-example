@@ -1,3 +1,7 @@
+# This file contains all GraphQL queries needed by the application.
+# Find the full available schema at
+# https://docs.cirruscrm.io/docs/graphql/schema/
+
 fragment Account on Account {
   id
   number
