@@ -1,3 +1,6 @@
+// This file configures GraphQL Codegen. It generates TypeScript types and a GraphQL SDK
+// based on the GraphQL schema and queries, which are then used by the application's GraphQL client.
+
 import type { CodegenConfig } from "@graphql-codegen/cli";
 
 const config: CodegenConfig = {
