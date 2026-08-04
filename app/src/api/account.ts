@@ -1,5 +1,4 @@
-import type { AccountsFilterInput } from "~/gql/graphql";
-import { getGraphQLClient } from "~/graphql/client";
+import { getGraphQLClient, type AccountsFilterInput } from "~/graphql";
 
 export const listAccounts = async (filter?: AccountsFilterInput) => {
   const client = await getGraphQLClient();

@@ -8,7 +8,7 @@ const config: CodegenConfig = {
   schema: "https://api.cirruscrm.io/graphql",
   documents: "src/**/*.graphql",
   generates: {
-    "src/gql/graphql.ts": {
+    "src/graphql/generated.ts": {
       // Generates a SDK that can be used in GraphQL client
       plugins: ["typescript-operations", "typescript-graphql-request"],
     },

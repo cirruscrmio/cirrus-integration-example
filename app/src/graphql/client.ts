@@ -1,8 +1,9 @@
 import { GraphQLClient } from "graphql-request";
 
 import config from "~/config";
-import { getSdk } from "~/gql/graphql";
+
 import { getToken } from "./auth";
+import { getSdk } from "./generated";
 
 /** Creates a GraphQL API client with authentication */
 export const getGraphQLClient = async () => {
