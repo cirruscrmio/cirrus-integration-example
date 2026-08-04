@@ -57,18 +57,6 @@ export type DynamicFieldFiltersInput = {
   filters?: Array<DynamicFieldFilterInput> | null | undefined;
 };
 
-export type ArticleFragment = {
-  id: string | null;
-  number: string | null;
-  description: string | null;
-  buyprice: number | null;
-  price: number | null;
-  name: string | null;
-  active: number | null;
-  externalKey: string | null;
-  vat: number | null;
-};
-
 export type AccountFragment = {
   id: number | null;
   number: string | null;
@@ -92,19 +80,6 @@ export type ListAccountsQuery = {
   } | null;
 };
 
-export const ArticleFragmentDoc = gql`
-  fragment Article on Article {
-    id
-    number
-    description
-    buyprice
-    price
-    name
-    active
-    externalKey
-    vat
-  }
-`;
 export const AccountFragmentDoc = gql`
   fragment Account on Account {
     id

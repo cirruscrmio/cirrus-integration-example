@@ -1,16 +1,3 @@
-fragment Article on Article {
-  id
-  number
-
-  description
-  buyprice
-  price
-  name
-  active
-  externalKey
-  vat
-}
-
 fragment Account on Account {
   id
   number
