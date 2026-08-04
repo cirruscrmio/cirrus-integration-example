@@ -20,8 +20,6 @@ export const configSchema = z.object({
   NODE_ENV: z
     .enum(["development", "test", "production"])
     .default("development"),
-
-  PORT: z.coerce.number().default(3000),
 });
 
 // Parse and validate the current process.env
