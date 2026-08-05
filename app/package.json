@@ -1,5 +1,5 @@
 {
-  "name": "@cirruscrmio/integration-example-api-server",
+  "name": "cirrus-integration-example-app",
   "module": "src/index.ts",
   "type": "module",
   "scripts": {
