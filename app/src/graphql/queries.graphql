@@ -2,13 +2,96 @@
 # Find the full available schema at
 # https://docs.cirruscrm.io/docs/graphql/schema/
 
+fragment Article on Article {
+  id
+  number
+
+  description
+  buyprice
+  price
+  name
+  active
+  externalKey
+  vat
+}
+
 fragment Account on Account {
   id
   number
   userId
 }
 
-query listAccounts($filter: AccountsFilterInput) {
+fragment Contact on Contact {
+  id
+  name
+  surname
+  title
+  active
+  externalKey
+}
+
+fragment OrderRow on OrderRow {
+  id
+  article {
+    id
+  }
+  articleUnit {
+    id
+    name
+  }
+  quantity {
+    delivered
+  }
+  price
+  discountPercent
+  discountAmount
+  sortOrder
+  specification
+  deleted
+}
+
+fragment Order on Order {
+  id
+  placeDate {
+    iso
+  }
+  externalKey
+  alternateId
+  account {
+    id
+  }
+  contact {
+    id
+  }
+  rows {
+    ...OrderRow
+  }
+  paymentTerm {
+    id
+    name
+  }
+  delivery {
+    term {
+      id
+      name
+    }
+    type {
+      id
+    }
+  }
+  status {
+    id
+    name
+  }
+  type {
+    id
+  }
+  user {
+    id
+  }
+}
+
+query findAccounts($filter: AccountsFilterInput) {
   accounts(filter: $filter) {
     pageInfo {
       endCursor
@@ -17,6 +100,20 @@ query listAccounts($filter: AccountsFilterInput) {
     edges {
       node {
         ...Account
+      }
+    }
+  }
+}
+
+query findContacts($cursor: String, $accountId: Int!) {
+  contacts(after: $cursor, filter: { active: 1, accountId: $accountId }) {
+    pageInfo {
+      endCursor
+      hasNextPage
+    }
+    edges {
+      node {
+        ...Contact
       }
     }
   }
