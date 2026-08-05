@@ -13,6 +13,12 @@ export const configSchema = z.object({
   // Endpoint to Cirrus GraphQL API
   CIRRUS_GRAPHQL_URL: z.url().default("https://api.cirruscrm.io/graphql"),
 
+  // Cirrus requires an account type and an owning user when creating an
+  // account. These are Cirrus-side concepts that usually don't exist in the
+  // external system, so we configure sensible defaults to fall back on.
+  CIRRUS_DEFAULT_ACCOUNT_TYPE_ID: z.coerce.number().int().positive(),
+  CIRRUS_DEFAULT_USER_ID: z.coerce.number().int().positive(),
+
   LOG_LEVEL: z
     .enum(["verbose", "debug", "info", "warn", "error"])
     .default("info"),

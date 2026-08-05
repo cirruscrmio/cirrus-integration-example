@@ -2,6 +2,40 @@
 # Find the full available schema at
 # https://docs.cirruscrm.io/docs/graphql/schema/
 
+query whoAmI {
+  viewer {
+    fullName
+  }
+}
+
+query articles($cursor: String) {
+  articles(after: $cursor) {
+    pageInfo {
+      endCursor
+      hasNextPage
+    }
+    edges {
+      node {
+        ...Article
+      }
+    }
+  }
+}
+
+query findArticle($cursor: String, $articleNumber: String!) {
+  articles(after: $cursor, filter: { fulltext: $articleNumber }) {
+    pageInfo {
+      endCursor
+      hasNextPage
+    }
+    edges {
+      node {
+        ...Article
+      }
+    }
+  }
+}
+
 fragment Article on Article {
   id
   number
@@ -15,10 +49,57 @@ fragment Article on Article {
   vat
 }
 
+query findAccounts($cursor: String, $accountNumber: String!) {
+  accounts(after: $cursor, filter: { fullText: $accountNumber }) {
+    pageInfo {
+      endCursor
+      hasNextPage
+    }
+    edges {
+      node {
+        ...Account
+      }
+    }
+  }
+}
+
+# Looks up accounts by their externalKey. Since the externalKey is unique per
+# external system record, this is what we use to check if an account has
+# already been synced into Cirrus.
+query findAccountByExternalKey($cursor: String, $externalKey: String!) {
+  accounts(after: $cursor, filter: { externalKey: $externalKey }) {
+    pageInfo {
+      endCursor
+      hasNextPage
+    }
+    edges {
+      node {
+        ...Account
+      }
+    }
+  }
+}
+
 fragment Account on Account {
   id
   number
+  name
+  externalKey
   userId
+}
+
+query findContacts($cursor: String, $accountId: Int!) {
+  contacts(after: $cursor, filter: { active: 1, accountId: $accountId }) {
+    pageInfo {
+      endCursor
+      hasNextPage
+    }
+    edges {
+      node {
+        ...Contact
+      }
+    }
+  }
 }
 
 fragment Contact on Contact {
@@ -28,6 +109,29 @@ fragment Contact on Contact {
   title
   active
   externalKey
+}
+
+query findAccountUser($accountId: Int) {
+  account(id: $accountId) {
+    userId
+    user {
+      id
+    }
+  }
+}
+
+query getOrders($cursor: String, $externalKey: String!) {
+  orders(after: $cursor, filter: { externalKey: $externalKey }) {
+    pageInfo {
+      endCursor
+      hasNextPage
+    }
+    edges {
+      node {
+        ...Order
+      }
+    }
+  }
 }
 
 fragment OrderRow on OrderRow {
@@ -91,29 +195,143 @@ fragment Order on Order {
   }
 }
 
-query findAccounts($filter: AccountsFilterInput) {
-  accounts(filter: $filter) {
+query findPaymentTerm($cursor: String, $name: String!) {
+  paymentTerms(after: $cursor, filter: { name: $name }) {
     pageInfo {
       endCursor
       hasNextPage
     }
     edges {
       node {
-        ...Account
+        id
+        name
       }
     }
   }
 }
 
-query findContacts($cursor: String, $accountId: Int!) {
-  contacts(after: $cursor, filter: { active: 1, accountId: $accountId }) {
+query findDeliveryTerm($cursor: String, $name: String!) {
+  deliveryTerms(after: $cursor, filter: { name: $name }) {
     pageInfo {
       endCursor
       hasNextPage
     }
     edges {
       node {
-        ...Contact
+        id
+        name
+      }
+    }
+  }
+}
+
+query findDeliveryType($cursor: String, $name: String!) {
+  deliveryTypes(after: $cursor, filter: { name: $name }) {
+    pageInfo {
+      endCursor
+      hasNextPage
+    }
+    edges {
+      node {
+        id
+        name
+      }
+    }
+  }
+}
+
+query findOrderTypes($cursor: String, $name: String!) {
+  orderTypes(after: $cursor, filter: { name: $name }) {
+    pageInfo {
+      endCursor
+      hasNextPage
+    }
+    edges {
+      node {
+        id
+        name
+      }
+    }
+  }
+}
+
+query findOrderStatuses($cursor: String, $name: String!) {
+  orderStatuses(after: $cursor, filter: { name: $name }) {
+    pageInfo {
+      endCursor
+      hasNextPage
+    }
+    edges {
+      node {
+        id
+        name
+      }
+    }
+  }
+}
+
+query findArticleUnits($cursor: String, $name: String!) {
+  articleUnits(after: $cursor, filter: { name: $name }) {
+    pageInfo {
+      endCursor
+      hasNextPage
+    }
+    edges {
+      node {
+        id
+        name
+      }
+    }
+  }
+}
+
+query findAnyArticleGroup {
+  articleGroups(filter: { sort: ID_ASC }) {
+    edges {
+      node {
+        id
+      }
+    }
+  }
+}
+
+query findOrderDefaults {
+  deliveryTypes(filter: { default: 1 }) {
+    edges {
+      node {
+        id
+      }
+    }
+  }
+
+  deliveryTerms(filter: { default: 1 }) {
+    edges {
+      node {
+        id
+      }
+    }
+  }
+
+  paymentTerms(filter: { default: 1 }) {
+    edges {
+      node {
+        id
+      }
+    }
+  }
+
+  orderTypes(filter: { default: 1 }) {
+    edges {
+      node {
+        id
+      }
+    }
+  }
+
+  orderStatuses {
+    edges {
+      node {
+        id
       }
     }
   }

@@ -16,6 +16,6 @@ export const getGraphQLClient = async () => {
   });
 
   // Wrap client in generated SDK to allow
-  // executing methods directly on client, such as `await client.listAccounts()`
+  // executing methods directly on client, such as `await client.findAccounts()`
   return getSdk(client);
 };
