@@ -1,0 +1,23 @@
+# This file contains all GraphQL queries needed by the application.
+# Find the full available schema at
+# https://docs.cirruscrm.io/docs/graphql/schema/
+
+fragment Account on Account {
+  id
+  number
+  userId
+}
+
+query listAccounts($filter: AccountsFilterInput) {
+  accounts(filter: $filter) {
+    pageInfo {
+      endCursor
+      hasNextPage
+    }
+    edges {
+      node {
+        ...Account
+      }
+    }
+  }
+}
