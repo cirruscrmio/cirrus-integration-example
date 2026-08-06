@@ -1,0 +1,161 @@
+# This file contains all GraphQL mutations needed by the application.
+# Find the full available schema at
+# https://docs.cirruscrm.io/docs/graphql/schema/
+
+mutation editArticle($id: ID!, $input: ArticleInput!) {
+  editArticle(id: $id, input: $input) {
+    article {
+      id
+    }
+  }
+}
+
+mutation createArticle($input: ArticleInput!) {
+  createArticle(input: $input) {
+    article {
+      id
+    }
+  }
+}
+
+mutation createPaymentTerm($input: CreatePaymentTermInput!) {
+  createPaymentTerm(input: $input) {
+    paymentTerm {
+      id
+      name
+    }
+  }
+}
+
+mutation createDeliveryTerm($input: CreateDeliveryTermInput!) {
+  createDeliveryTerm(input: $input) {
+    deliveryTerm {
+      id
+      name
+    }
+  }
+}
+
+mutation createDeliveryType($input: CreateDeliveryTypeInput!) {
+  createDeliveryType(input: $input) {
+    deliveryType {
+      id
+      name
+    }
+  }
+}
+
+mutation createOrderStatus($input: CreateOrderStatusInput!) {
+  createOrderStatus(input: $input) {
+    orderStatus {
+      id
+      name
+    }
+  }
+}
+
+mutation createOrderType($input: CreateOrderTypeInput!) {
+  createOrderType(input: $input) {
+    orderType {
+      id
+      name
+    }
+  }
+}
+
+mutation createArticleUnit($input: CreateArticleUnitInput!) {
+  createArticleUnit(input: $input) {
+    articleUnit {
+      id
+      name
+    }
+  }
+}
+
+mutation createOrder($input: CreateOrderInput!) {
+  createOrder(input: $input) {
+    order {
+      id
+    }
+  }
+}
+
+mutation editOrder($input: UpdateOrderInput!) {
+  updateOrder(input: $input) {
+    order {
+      id
+    }
+  }
+}
+
+mutation createAccount(
+  $name: String!
+  $typeId: Int!
+  $userId: Int!
+  $number: String
+  $externalKey: String
+) {
+  createAccount(
+    name: $name
+    typeId: $typeId
+    userId: $userId
+    number: $number
+    externalKey: $externalKey
+  ) {
+    ...Account
+  }
+}
+
+mutation editAccount(
+  $id: Int!
+  $name: String!
+  $typeId: Int!
+  $userId: Int
+  $number: String
+  $externalKey: String
+) {
+  editAccount(
+    id: $id
+    name: $name
+    typeId: $typeId
+    userId: $userId
+    number: $number
+    externalKey: $externalKey
+  ) {
+    ...Account
+  }
+}
+
+mutation createContact(
+  $accountId: Int!
+  $firstName: String!
+  $lastName: String!
+  $externalKey: String!
+) {
+  createContact(
+    name: $firstName
+    surname: $lastName
+    accountId: $accountId
+    externalKey: $externalKey
+  ) {
+    id
+  }
+}
+
+mutation editContact(
+  $id: Int!
+  $accountId: Int!
+  $firstName: String!
+  $lastName: String!
+  $externalKey: String!
+) {
+  editContact(
+    id: $id
+    accountId: $accountId
+    name: $firstName
+    surname: $lastName
+    externalKey: $externalKey
+  ) {
+    ...Contact
+  }
+}
